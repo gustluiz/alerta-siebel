@@ -22,6 +22,7 @@ import org.jsoup.select.Elements;
 public class AlertaSiebel {
 
 	HashMap<String, Defeito> listaDefeitos = new HashMap<String, Defeito>();
+	private int countChecksNoChange;
 	
 	public static void main(String[] args) throws MalformedURLException, IOException, InterruptedException {
 		
@@ -47,7 +48,7 @@ public class AlertaSiebel {
 		Notify note = new Notify("elainebrasil@protonmail.com, elainebrasil@gmail.com, gustavo.l.ferreira@gmail.com");
 		//Notify note = new Notify("gustavo.l.ferreira@gmail.com");
 
-		int countChecksNoChange = 0;
+		this.countChecksNoChange = 0;
 		
 		String url = "http://104.41.15.137:9000/mobile/detalhesfab/SIEBEL";
 		// Obtem os dados da pagina web
@@ -87,11 +88,11 @@ public class AlertaSiebel {
 			}
 			System.out.println(msg);
 			note.enviaEmail(msg.toString());		
-			countChecksNoChange = 0;
+			this.countChecksNoChange = 0;
 		} else {
-			countChecksNoChange++;
-			if( countChecksNoChange == 30) {
-				countChecksNoChange = 0;
+			this.countChecksNoChange++;
+			if( this.countChecksNoChange == 30) {
+				this.countChecksNoChange = 0;
 				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");				
 				msg.append("Nenhuma alteração desde " + dateFormat.format( new Date( System.currentTimeMillis() ) ) + "\r\n");	
 				msg.append("\r\n=====================================================================\r\n");
@@ -101,7 +102,7 @@ public class AlertaSiebel {
 					msg.append("\r\n=====================================================================\r\n");								
 				}				
 				System.out.println(msg);
-				note.enviaEmail(msg.toString());
+				//note.enviaEmail(msg.toString());
 			}
 		}
 		
